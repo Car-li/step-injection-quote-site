@@ -3,24 +3,261 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>STEP 注塑快速报价助手</title>
-  <meta name="description" content="STEP/STP 注塑件前期报价估算工具，支持重量、射胶量、锁模力、推荐机台、周期、成本和 Excel 报价单。">
+  <title>STEP 注塑快速报价助手 - STEP/STP 报价参数与 Excel 报价单</title>
+  <meta name="description" content="STEP 注塑快速报价助手，面向注塑厂、模具厂和结构工程师，导入 STEP/STP 文件快速估算重量、射胶量、锁模力、机台、周期和成本，并导出 Excel 报价单。">
+  <meta property="og:title" content="STEP 注塑快速报价助手">
+  <meta property="og:description" content="导入 STEP/STP 文件，快速生成注塑报价底稿和 Excel 报价单。">
+  <meta property="og:image" content="assets/product-preview.png">
   <style>
-    :root{--ink:#17202a;--muted:#607080;--line:#d8e0e8;--paper:#f6f7f9;--panel:#fff;--brand:#0b766f;--brand2:#084f4b;--soft:#e7f4f2;--warn:#fff4dd}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);background:var(--paper);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",Arial,sans-serif;line-height:1.65}.wrap{width:min(1120px,calc(100% - 32px));margin:0 auto}.nav{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.95);border-bottom:1px solid var(--line);backdrop-filter:blur(10px)}.navin{min-height:64px;display:flex;align-items:center;justify-content:space-between;gap:18px}.brand{font-weight:850;font-size:18px}.links{display:flex;gap:16px;white-space:nowrap;color:var(--muted);font-size:14px}.links a{text-decoration:none;color:inherit}.hero{background:#fff;border-bottom:1px solid var(--line)}.hero-grid{display:grid;grid-template-columns:1.04fr .96fr;gap:42px;align-items:center;padding:58px 0 42px}.eyebrow{display:inline-flex;align-items:center;min-height:30px;padding:0 10px;border-radius:999px;background:var(--soft);border:1px solid #c9e6e2;color:var(--brand2);font-size:13px;font-weight:750;margin-bottom:16px}h1{margin:0 0 16px;font-size:clamp(34px,5vw,56px);line-height:1.08}.lead{margin:0 0 24px;color:#394957;font-size:18px;max-width:620px}.actions{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:16px}.button{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:0 18px;border-radius:6px;border:1px solid var(--brand);background:var(--brand);color:#fff;text-decoration:none;font-weight:750}.button.secondary{background:#fff;color:var(--brand)}.micro{color:var(--muted);font-size:14px}.mock{border:1px solid var(--line);border-radius:8px;background:#f1f5f7;box-shadow:0 20px 50px rgba(31,50,68,.12);overflow:hidden}.mock-head{height:44px;background:#13242d;color:#fff;display:flex;align-items:center;padding:0 16px;font-weight:750}.mock-body{padding:18px;background:#fff}.part{height:170px;border-radius:8px;background:linear-gradient(135deg,#dce8ee,#9bb5c3 55%,#6f8794);position:relative;margin-bottom:14px}.part:after{content:"STEP preview";position:absolute;right:14px;bottom:12px;color:#fff;font-weight:800}.rows{display:grid;gap:8px}.row{display:grid;grid-template-columns:1fr auto;gap:10px;border:1px solid var(--line);border-radius:6px;padding:8px 10px;color:var(--muted)}section{padding:46px 0}.title{margin:0 0 8px;font-size:28px;line-height:1.22}.note{margin:0 0 24px;color:var(--muted);max-width:780px}.grid{display:grid;gap:16px}.cols3{grid-template-columns:repeat(3,1fr)}.cols4{grid-template-columns:repeat(4,1fr)}.card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:20px}.card h3{margin:0 0 8px;font-size:18px}.card p{margin:0;color:var(--muted)}.metric strong{display:block;font-size:23px;color:var(--brand2);margin-bottom:4px}.amount{margin:8px 0 14px;color:var(--brand2);font-size:34px;font-weight:850}.price ul{margin:0 0 20px;padding-left:20px;color:var(--muted)}.notice{background:var(--warn);border:1px solid #efd4a5;border-radius:8px;padding:18px;color:#68400f}.download{display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:8px;padding:22px}.contact{background:#13242d;color:#fff}.contact .note,.contact .card p{color:#c5d1d8}.contact .card{background:#1c313b;border-color:#304a56}footer{padding:24px 0;color:var(--muted);background:#fff;border-top:1px solid var(--line);font-size:13px}@media(max-width:860px){.navin{align-items:flex-start;flex-direction:column;padding:12px 0}.links{overflow-x:auto;width:100%;padding-bottom:4px}.hero-grid,.cols3,.cols4,.download{grid-template-columns:1fr}.hero-grid{padding-top:36px}}
+    :root {
+      --ink: #17202a;
+      --muted: #607080;
+      --line: #d8e0e8;
+      --paper: #f6f7f9;
+      --panel: #ffffff;
+      --brand: #0b766f;
+      --brand-dark: #084f4b;
+      --accent: #b45c16;
+      --soft: #e7f4f2;
+      --warn: #fff4dd;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", Arial, sans-serif;
+      line-height: 1.65;
+    }
+    a { color: inherit; }
+    .wrap { width: min(1120px, calc(100% - 32px)); margin: 0 auto; }
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(255, 255, 255, 0.94);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(12px);
+    }
+    .nav-inner {
+      min-height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .brand { font-weight: 850; font-size: 18px; }
+    .links { display: flex; gap: 18px; color: var(--muted); font-size: 14px; white-space: nowrap; }
+    .links a { text-decoration: none; }
+    .hero {
+      background: #fff;
+      border-bottom: 1px solid var(--line);
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.04fr 0.96fr;
+      gap: 42px;
+      align-items: center;
+      padding: 58px 0 42px;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 0 10px;
+      border-radius: 999px;
+      background: var(--soft);
+      border: 1px solid #c9e6e2;
+      color: var(--brand-dark);
+      font-size: 13px;
+      font-weight: 750;
+      margin-bottom: 16px;
+    }
+    h1 { margin: 0 0 16px; font-size: clamp(34px, 5vw, 56px); line-height: 1.08; letter-spacing: 0; }
+    .lead { margin: 0 0 24px; color: #394957; font-size: 18px; max-width: 620px; }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 16px; }
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 0 18px;
+      border-radius: 6px;
+      border: 1px solid var(--brand);
+      background: var(--brand);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 750;
+      white-space: nowrap;
+    }
+    .button.secondary { background: #fff; color: var(--brand); }
+    .microcopy { color: var(--muted); font-size: 14px; }
+    .visual {
+      margin: 0;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      background: #f1f5f7;
+      box-shadow: 0 20px 50px rgba(31, 50, 68, 0.12);
+    }
+    .visual img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+    .visual figcaption { padding: 14px 16px; color: var(--muted); background: #fff; border-top: 1px solid var(--line); font-size: 14px; }
+    section { padding: 46px 0; }
+    .section-title { margin: 0 0 8px; font-size: 28px; line-height: 1.22; }
+    .section-note { margin: 0 0 24px; color: var(--muted); max-width: 780px; }
+    .grid { display: grid; gap: 16px; }
+    .cols-2 { grid-template-columns: repeat(2, 1fr); }
+    .cols-3 { grid-template-columns: repeat(3, 1fr); }
+    .cols-4 { grid-template-columns: repeat(4, 1fr); }
+    .card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 20px; }
+    .card h3 { margin: 0 0 8px; font-size: 18px; line-height: 1.3; }
+    .card p { margin: 0; color: var(--muted); }
+    .metric strong { display: block; font-size: 24px; color: var(--brand-dark); margin-bottom: 4px; }
+    .price .amount { margin: 8px 0 14px; color: var(--brand-dark); font-size: 34px; font-weight: 850; }
+    .price ul { margin: 0 0 20px; padding-left: 20px; color: var(--muted); }
+    .price li + li { margin-top: 6px; }
+    .case-img { width: 100%; border-radius: 8px; border: 1px solid var(--line); background: #edf2f5; }
+    .notice { background: var(--warn); border: 1px solid #efd4a5; border-radius: 8px; padding: 18px; color: #68400f; }
+    .download-box {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 20px;
+      align-items: center;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 22px;
+    }
+    .download-box h3 { margin: 0 0 6px; font-size: 22px; }
+    .download-box p { margin: 0; color: var(--muted); }
+    .contact { background: #13242d; color: #fff; }
+    .contact .section-note, .contact .card p { color: #c5d1d8; }
+    .contact .card { background: #1c313b; border-color: #304a56; }
+    footer { padding: 24px 0; color: var(--muted); background: #fff; border-top: 1px solid var(--line); font-size: 13px; }
+    @media (max-width: 860px) {
+      .nav-inner { align-items: flex-start; flex-direction: column; padding: 12px 0; }
+      .links { width: 100%; overflow-x: auto; padding-bottom: 4px; }
+      .hero-grid, .cols-2, .cols-3, .cols-4, .download-box { grid-template-columns: 1fr; }
+      .hero-grid { padding-top: 36px; }
+    }
   </style>
 </head>
 <body>
-  <nav class="nav"><div class="wrap navin"><div class="brand">STEP 注塑快速报价助手</div><div class="links"><a href="#features">功能</a><a href="#pricing">价格</a><a href="#download">下载</a><a href="#contact">联系</a></div></div></nav>
-  <header class="hero"><div class="wrap hero-grid"><div><div class="eyebrow">注塑厂 / 模具厂 / 结构工程师前期报价工具</div><h1>STEP 文件快速生成注塑报价参数</h1><p class="lead">导入 STEP/STP 文件后，快速估算体积、净重、射胶量、锁模力、推荐机台、成型周期、材料成本和机时成本，并导出 Excel 报价单。</p><div class="actions"><a class="button" href="#download">下载试用版</a><a class="button secondary" href="#pricing">查看价格</a></div><div class="micro">试用版可分析 3 个文件。本地运行，不上传客户图纸。</div></div><div class="mock"><div class="mock-head">报价结果预览</div><div class="mock-body"><div class="part"></div><div class="rows"><div class="row"><span>净重估算</span><strong>自动计算</strong></div><div class="row"><span>锁模力 / 推荐机台</span><strong>自动推荐</strong></div><div class="row"><span>材料成本 / 机时成本</span><strong>导出 Excel</strong></div></div></div></div></div></header>
+  <nav class="nav">
+    <div class="wrap nav-inner">
+      <div class="brand">STEP 注塑快速报价助手</div>
+      <div class="links">
+        <a href="#features">功能</a>
+        <a href="#cases">案例</a>
+        <a href="#pricing">价格</a>
+        <a href="#download">下载</a>
+        <a href="#contact">联系</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="eyebrow">注塑厂 / 模具厂 / 结构工程师前期报价工具</div>
+        <h1>STEP 文件快速生成注塑报价参数</h1>
+        <p class="lead">导入 STEP/STP 文件后，快速估算体积、净重、射胶量、锁模力、推荐机台、成型周期、材料成本和机时成本，并导出带产品轴测图的 Excel 报价单。</p>
+        <div class="actions">
+          <a class="button" href="#download">下载试用版</a>
+          <a class="button secondary" href="#pricing">查看价格</a>
+        </div>
+        <div class="microcopy">试用版可分析 3 个文件。本地运行，不上传客户图纸。</div>
+      </div>
+      <figure class="visual">
+        <img src="assets/product-preview.png" alt="STEP 注塑报价助手真实软件界面">
+        <figcaption>示例：导入 STEP 后自动生成产品轴测预览，并随 Excel 报价单导出。</figcaption>
+      </figure>
+    </div>
+  </header>
+
   <main>
-    <section id="features"><div class="wrap"><h2 class="title">先把报价底稿跑出来</h2><p class="note">它不替代最终工程报价，而是把前期重复计算变成可编辑的报价底稿，方便报价员和工程师再按实际材料、模具结构、机台和经验修正。</p><div class="grid cols4"><div class="card metric"><strong>STEP/STP</strong><p>支持常见三维交换文件导入</p></div><div class="card metric"><strong>批量分析</strong><p>一次导入多个零件统一估算</p></div><div class="card metric"><strong>Excel</strong><p>导出可编辑报价单</p></div><div class="card metric"><strong>本地运行</strong><p>图纸留在自己的电脑上处理</p></div></div></div></section>
-    <section><div class="wrap grid cols3"><article class="card"><h3>报价参数</h3><p>估算体积、净重、射胶重、锁模力、推荐注塑机吨位、成型周期。</p></article><article class="card"><h3>成本底稿</h3><p>按材料价格、机时费、穴数和报价上浮比例，生成单件参考价。</p></article><article class="card"><h3>参数可维护</h3><p>材料密度、材料单价、机台吨位、机时费和上浮比例可按工厂规则调整。</p></article></div></section>
-    <section><div class="wrap"><h2 class="title">适合这些场景</h2><div class="grid cols3"><article class="card"><h3>注塑厂报价</h3><p>客户一次发来多个 STEP 文件，需要快速生成报价底稿。</p></article><article class="card"><h3>模具厂前期评估</h3><p>业务和工程人员先判断产品重量、机台吨位和成型周期。</p></article><article class="card"><h3>结构工程设计</h3><p>设计阶段初步了解不同材料、壁厚和重量变化对注塑成本的影响。</p></article></div></div></section>
-    <section id="pricing"><div class="wrap"><h2 class="title">价格方案</h2><p class="note">建议先用自己的 STEP 文件试用，确认能跑通流程和导出结果后再授权正式版。</p><div class="grid cols3"><article class="card price"><h3>试用版</h3><div class="amount">免费</div><ul><li>可分析 3 个文件</li><li>验证导入和导出流程</li><li>适合先测自己的图纸</li></ul><a class="button secondary" href="#download">下载试用</a></article><article class="card price"><h3>个人正式版</h3><div class="amount">199 元/台</div><ul><li>单机正式授权</li><li>解除试用文件限制</li><li>适合工程师和个人接单</li></ul><a class="button" href="#contact">联系授权</a></article><article class="card price"><h3>工厂版</h3><div class="amount">399 元起/台</div><ul><li>包含一次远程安装</li><li>材料价和机时费调校</li><li>可升级报价模板定制</li></ul><a class="button" href="#contact">咨询工厂版</a></article></div></div></section>
-    <section><div class="wrap"><div class="notice"><strong>报价边界说明：</strong>本工具用于前期快速估算。STEP 通常不包含真实材料、流道、外观要求、倒扣、分型线和模具结构信息，正式报价仍需结合工程经验、模流分析、模具方案、试模数据和供应链实时报价修正。</div></div></section>
-    <section id="download"><div class="wrap"><h2 class="title">下载与试用</h2><p class="note">正式运营时，请把下面占位内容替换为网盘、GitHub Release 或服务器下载地址。</p><div class="download"><div><h3>STEP 注塑快速报价助手试用版</h3><p>试用版可分析 3 个文件。下载链接待填写：________</p></div><a class="button" href="#contact">联系获取试用</a></div></div></section>
-    <section id="contact" class="contact"><div class="wrap"><h2 class="title">联系试用与授权</h2><p class="note">请把下面占位信息替换成你的微信、公众号、网盘链接或闲鱼/淘宝/1688 店铺链接。</p><div class="grid cols3"><article class="card"><h3>微信</h3><p>填写你的微信号：________</p></article><article class="card"><h3>公众号/网页</h3><p>填写公众号名称或正式网址：________</p></article><article class="card"><h3>购买平台</h3><p>填写闲鱼/淘宝/1688 链接：________</p></article></div></div></section>
+    <section id="features">
+      <div class="wrap">
+        <h2 class="section-title">先把报价底稿跑出来</h2>
+        <p class="section-note">它不替代最终工程报价，而是把前期重复计算变成可编辑的报价底稿，方便报价员和工程师再按实际材料、模具结构、机台和经验修正。</p>
+        <div class="grid cols-4">
+          <div class="card metric"><strong>STEP/STP</strong><p>支持常见三维交换文件导入</p></div>
+          <div class="card metric"><strong>批量分析</strong><p>一次导入多个零件统一估算</p></div>
+          <div class="card metric"><strong>Excel</strong><p>导出可编辑报价单和预览图</p></div>
+          <div class="card metric"><strong>本地运行</strong><p>图纸留在自己的电脑上处理</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap grid cols-3">
+        <article class="card"><h3>报价参数</h3><p>估算体积、净重、射胶重、锁模力、推荐注塑机吨位、成型周期。</p></article>
+        <article class="card"><h3>成本底稿</h3><p>按材料价格、机时费、穴数和报价上浮比例，生成单件参考价。</p></article>
+        <article class="card"><h3>参数可维护</h3><p>材料密度、材料单价、机台吨位、机时费和上浮比例可按工厂规则调整。</p></article>
+      </div>
+    </section>
+
+    <section id="cases">
+      <div class="wrap">
+        <h2 class="section-title">适合这些报价场景</h2>
+        <p class="section-note">先快速得到基础参数，再由报价员或工程师结合经验修正。</p>
+        <div class="grid cols-2">
+          <div><img class="case-img" src="assets/case-preview.png" alt="STEP 注塑报价参数结果界面"></div>
+          <div class="grid">
+            <article class="card"><h3>注塑厂报价</h3><p>客户一次发来多个 STEP 文件，需要快速生成报价底稿。</p></article>
+            <article class="card"><h3>模具厂前期评估</h3><p>业务和工程人员先判断产品重量、机台吨位和成型周期。</p></article>
+            <article class="card"><h3>结构工程设计</h3><p>设计阶段初步了解不同材料、壁厚和重量变化对注塑成本的影响。</p></article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="pricing">
+      <div class="wrap">
+        <h2 class="section-title">价格方案</h2>
+        <p class="section-note">建议先用自己的 STEP 文件试用，确认能跑通流程和导出结果后再授权正式版。</p>
+        <div class="grid cols-3">
+          <article class="card price"><h3>试用版</h3><div class="amount">免费</div><ul><li>可分析 3 个文件</li><li>验证导入和导出流程</li><li>适合先测自己的图纸</li></ul><a class="button secondary" href="#download">下载试用</a></article>
+          <article class="card price"><h3>个人正式版</h3><div class="amount">10 元/台</div><ul><li>单机正式授权</li><li>解除试用文件限制</li><li>适合工程师和个人接单</li></ul><a class="button" href="#contact">联系授权</a></article>
+          <article class="card price"><h3>工厂版</h3><div class="amount">10 元/台</div><ul><li>包含一次远程安装</li><li>材料价和机时费调校</li><li>可升级报价模板定制</li></ul><a class="button" href="#contact">咨询工厂版</a></article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <div class="notice"><strong>报价边界说明：</strong>本工具用于前期快速估算。STEP 通常不包含真实材料、流道、外观要求、倒扣、分型线和模具结构信息，正式报价仍需结合工程经验、模流分析、模具方案、试模数据和供应链实时报价修正。</div>
+      </div>
+    </section>
+
+    <section id="download">
+      <div class="wrap">
+        <h2 class="section-title">下载与试用</h2>
+        <p class="section-note">正式上线前，请把下面的下载按钮替换为网盘、GitHub Release 或服务器下载地址。</p>
+        <div class="download-box">
+          <div>
+            <h3>STEP 注塑快速报价助手试用版</h3>
+            <p>试用版可分析 3 个文件。下载链接待填写：________</p>
+          </div>
+          <a class="button" href="#contact">联系获取试用</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="contact">
+      <div class="wrap">
+        <h2 class="section-title">联系试用与授权</h2>
+        <p class="section-note">请把下面占位信息替换成你的微信、公众号、网盘链接或闲鱼/淘宝/1688 店铺链接。</p>
+        <div class="grid cols-3">
+          <article class="card"><h3>微信</h3><p>填写你的微信号：________</p></article>
+          <article class="card"><h3>公众号/网页</h3><p>填写公众号名称或正式网址：________</p></article>
+          <article class="card"><h3>购买平台</h3><p>填写闲鱼/淘宝/1688 链接：________</p></article>
+        </div>
+      </div>
+    </section>
   </main>
+
   <footer><div class="wrap">STEP 注塑快速报价助手 | 前期估算工具，不替代最终工程报价。</div></footer>
 </body>
 </html>
